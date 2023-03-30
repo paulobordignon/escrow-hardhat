@@ -1,28 +1,35 @@
 body {
-  background-color: #eee;
+  background-color: #FDFDFD;
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   font-family: 'Muli', sans-serif;
+}
+
+#root{
+  display: flex;
 }
 
 .contract, .existing-contracts {
   margin: 20px;
-  display: inline-block;
   padding: 40px;
   border: 1px solid #ddd;
-  background-color: #fff;
+  border-radius: 20px;
 }
 
 h1 {
   margin: 10px;
   padding: 10px;
   border-bottom: 1px solid #eee;
+  font-size: 20px;
+  font-color: #484b6a;
+  font-weight: 700;
 }
 
 label {
   display: flex;
   flex-direction: column;
-  text-transform: uppercase;
-  color: #aaa;
+  color: #484b6a;
   margin: 20px;
 }
 
@@ -32,7 +39,7 @@ input[type="text"] {
 }
 
 .button {
-  background-color: #f58427;
+  background-color: #484b6a;
   color: white;
   text-align: center;
   font-weight: bold;
@@ -42,9 +49,11 @@ input[type="text"] {
   font-size: 14px;
   letter-spacing: 1px;
   cursor: pointer;
+  border-radius: 20px;
 }
 
 .existing-contract ul {
+  border-radius: 20px;
   padding: 10px;
   margin: 20px;
   background-color: #eee;
