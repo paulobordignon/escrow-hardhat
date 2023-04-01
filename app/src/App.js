@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import deploy from './deploy';
 import Escrow from './Escrow';
+import EscrowABI from './artifacts/contracts/Escrow.sol/Escrow';
 
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 
@@ -53,6 +54,30 @@ function App() {
     setEscrows([...escrows, escrow]);
   }
 
+  async function getContract(contract) {
+    const loadContract = new ethers.Contract(contract, EscrowABI.abi, signer)
+    const contractBalance = await provider.getBalance(contract)
+
+    const escrow = {
+      address: contract,
+      arbiter: await loadContract.arbiter(),
+      beneficiary: await loadContract.beneficiary(),
+      value: ethers.utils.formatEther(contractBalance._hex),
+      handleApprove: async () => {
+        loadContract.on('Approved', () => {
+          document.getElementById(contract).className =
+            'complete';
+          document.getElementById(contract).innerText =
+            "✓ It's been approved!";
+        });
+
+        await approve(loadContract, signer);
+      },
+    }
+
+    setEscrows([escrow]);
+  }
+
   return (
     <>
       <div className="contract">
@@ -89,6 +114,16 @@ function App() {
         <h1> Existing Contracts </h1>
 
         <div id="container">
+          <label>
+            Get a contract
+            <input type="text" id="contract" onBlur={
+              evt => {
+                if (evt.target.value.length === 42){
+                  getContract(evt.target.value)
+                }
+              }
+            }/>
+          </label>
           {escrows.map((escrow) => {
             return <Escrow key={escrow.address} {...escrow} />;
           })}
